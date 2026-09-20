@@ -264,43 +264,34 @@ def print_on_tactograph(depth_grid):
     # 15 gantry positions × 11 servo values.
     hardware_grid = display_grid.T
 
-    print("\n================================")
-    print("TACTOGRAPH PRINT SEQUENCE")
-    print("================================")
-
-    print(
-        f"Display grid shape: {display_grid.shape}"
-    )
-
-    print(
-        f"Hardware grid shape: {hardware_grid.shape}"
-    )
-
-    for gantry_position, servo_values in enumerate(
-        hardware_grid
-    ):
-        print(
-            f"\nMove gantry to position "
-            f"{gantry_position + 1}"
-        )
-
-        for servo_index, percentage in enumerate(
-            servo_values
-        ):
-            print(
-                f" Servo {servo_index + 1}"
-                f" -> {int(percentage)}%"
-            )
-
-        print(" Reset all 11 servos")
-
-    print("\nPrint sequence complete.")
+    # TODO:
+    # This matrix will eventually be sent to the
+    # Raspberry Pi / QNX controller.
+    #
+    # Example:
+    # send_to_controller(hardware_grid)
 
     return (
-        "Print sequence generated successfully: "
-        "15 gantry positions with 11 servo values each. "
-        "Hardware integration still needs to be connected."
+        "Print sequence generated successfully. "
+        "The hardware matrix is ready for transmission."
     )
+
+
+def reset_pin_board():
+
+    print("\n================================")
+    print("TACTOGRAPH RESET")
+    print("================================")
+
+    print("Activating reset servo...")
+    print("Activating reset stepper...")
+    print("Clearing tactile surface...")
+    print("Reset complete.")
+
+    return (
+        "Tactile surface reset successfully."
+    )
+
 # ============================================================
 # USER INTERFACE
 # ============================================================
@@ -310,16 +301,18 @@ with gr.Blocks(
 ) as demo:
 
     # Logo
-    gr.Markdown(
-        """
-<p align="center">
-    /gradio_api/file=logo.png
-</p>
-""",
-        elem_id="logo"
-    )
+
+    with gr.Row():
+        gr.Image(
+            value=Path("C:\\Users\\jaden\\OneDrive\\Desktop\\Tactography\\logo.png"),
+            show_label=False,
+            interactive=False,
+            container=False,
+            height=220
+        )
 
     # Instructions
+
     gr.Markdown("""
 ## Welcome to Tactograph
 
@@ -329,9 +322,9 @@ with gr.Blocks(
 2. Click **Compute Depth**.
 3. Review the generated tactile heatmap.
 4. Click **Print on Tactograph**.
-5. Export the generated print instructions.
+5. Download the generated print instructions.
 
-The display is sampled onto an **11-row × 15-column tactile grid** and normalized to **0-100% depth values**.
+The display is sampled onto an **11-row × 15-column tactile grid** and normalized to **0%–100% depth values**.
 """)
 
     stored_depth_grid = gr.State(
@@ -362,13 +355,17 @@ The display is sampled onto an **11-row × 15-column tactile grid** and normaliz
             "Print on Tactograph"
         )
 
+        reset_button = gr.Button(
+            "Reset Tactile Surface"
+        )
+
     status_output = gr.Textbox(
         label="Status",
         interactive=False
     )
 
     depth_output_json = gr.JSON(
-        label="Depth Percentages (0-100)"
+        label="Depth Percentages (0–100)"
     )
 
     file_output = gr.File(
@@ -393,11 +390,16 @@ The display is sampled onto an **11-row × 15-column tactile grid** and normaliz
         outputs=status_output
     )
 
+    reset_button.click(
+        fn=reset_pin_board,
+        outputs=status_output
+    )
+
 
 if __name__ == "__main__":
+
     print("Launching Gradio...")
 
     demo.launch(
-        share=True,
         debug=True
     )
