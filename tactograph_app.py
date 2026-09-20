@@ -6,7 +6,6 @@ import numpy as np
 from PIL import Image
 from transformers import pipeline
 
-
 # ============================================================
 # TACTOGRAPH CONFIGURATION
 # ============================================================
@@ -306,25 +305,34 @@ def print_on_tactograph(depth_grid):
 # USER INTERFACE
 # ============================================================
 
-with gr.Blocks(title="Tactograph") as demo:
+with gr.Blocks(
+    title="Tactograph"
+) as demo:
 
+    # Logo
     gr.Markdown(
         """
-# Tactograph
-
-### Turning information into touch
-
-Upload an image or take a live photo.
-
-Tactograph converts the image into a depth map,
-samples it into an **11-row × 15-column pin grid**,
-and outputs normalized depth percentages
-from **0% to 100%**.
-
-The Raspberry Pi can later convert these
-percentages into servo movements.
-"""
+<p align="center">
+    /gradio_api/file=logo.png
+</p>
+""",
+        elem_id="logo"
     )
+
+    # Instructions
+    gr.Markdown("""
+## Welcome to Tactograph
+
+### Getting Started
+
+1. Upload an image or take a live photo.
+2. Click **Compute Depth**.
+3. Review the generated tactile heatmap.
+4. Click **Print on Tactograph**.
+5. Export the generated print instructions.
+
+The display is sampled onto an **11-row × 15-column tactile grid** and normalized to **0-100% depth values**.
+""")
 
     stored_depth_grid = gr.State(
         value=None
@@ -384,6 +392,7 @@ percentages into servo movements.
         inputs=stored_depth_grid,
         outputs=status_output
     )
+
 
 if __name__ == "__main__":
     print("Launching Gradio...")
