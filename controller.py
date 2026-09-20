@@ -34,6 +34,7 @@ class TactographController:
         self.calibration = self.load_calibration(self.calibration_path)
         self.port = port or self.auto_detect_port()
         self.ser: Optional[serial.Serial] = None
+        self._STEPCOUNT = -330
         self.connect()
 
     @staticmethod
@@ -194,9 +195,9 @@ class TactographController:
         Waits for completion and returns the final stepper position.
         """
         if x not in (1, -1):
-            steps = 1000 if x >= 0 else -1000
+            steps = self._STEPCOUNT if x >= 0 else -self._STEPCOUNT
         else:
-            steps = 1000 if x == 1 else -1000
+            steps = self._STEPCOUNT if x == 1 else -self._STEPCOUNT
 
         cmd = f"MOVE {steps}"
         resp = self._send_raw_command(cmd)

@@ -31,7 +31,8 @@ def main():
     reset_heights()
     time.sleep(0.5)
 
-    # 2. Example: Set heights across all 11 pins (channels 0..10, values from 0.0 to 1.0)
+    set_lock(1)
+    # # 2. Example: Set heights across all 11 pins (channels 0..10, values from 0.0 to 1.0)
     # print("Setting pin heights...")
     # sample_heights = [1.0] * 11
     # set_heights(sample_heights)
@@ -49,9 +50,13 @@ def main():
     # # 4. Stepper motion: advance forward (+100 steps) then back (-100 steps)
     print("Advancing stepper forward by 100 steps (x=1)...")
     advance_stepper(1)
+    advance_stepper(1)
+    advance_stepper(1)
     time.sleep(0.5)
 
     print("Advancing stepper backward by 100 steps (x=-1)...")
+    advance_stepper(-1)
+    advance_stepper(-1)
     advance_stepper(-1)
     time.sleep(0.5)
 
@@ -59,6 +64,7 @@ def main():
     print("Resetting heights...")
     reset_heights()
 
+    set_lock(0)
     print("Commands completed successfully.")
     ctrl.close()
 

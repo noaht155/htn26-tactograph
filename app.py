@@ -240,37 +240,55 @@ def generate_depth_map(input_image):
 # PRINT PLACEHOLDER
 # ============================================================
 
+import time
+from controller import (
+    get_controller,
+    set_heights,
+    reset_heights,
+    set_lock,
+    advance_stepper,
+)
+
+ctrl = get_controller()
+
 def print_on_tactograph(depth_grid):
-
     if depth_grid is None:
-        raise gr.Error(
-            "Compute depth before printing."
-        )
+        raise gr.Error("Compute depth before printing.")
 
-    # The visual grid is 11 rows × 15 columns.
-    display_grid = np.asarray(
-        depth_grid,
-        dtype=int
-    )
+    display_grid = np.asarray(depth_grid, dtype=int)
 
     if display_grid.shape != (BOARD_ROWS, BOARD_COLS):
         raise gr.Error(
-            f"Expected a display grid shaped "
-            f"{BOARD_ROWS} × {BOARD_COLS}, "
+            f"Expected a display grid shaped {BOARD_ROWS} × {BOARD_COLS}, "
             f"but received {display_grid.shape}."
         )
 
-    # Convert the visual grid into hardware instructions:
-    # 15 gantry positions × 11 servo values.
     hardware_grid = display_grid.T
 
-    # TODO:
-    # This matrix will eventually be sent to the
-    # Raspberry Pi / QNX controller.
-    #
-    # Example:
-    # send_to_controller(hardware_grid)
+    print(hardware_grid)
 
+    try:
+        set_lock(1.0)
+        for row in hardware_grid:
+            set_heights([x / 30.0 for x in row])
+            time.sleep(1.2)
+
+            # Retract actuator servos back to home
+            reset_heights()
+            time.sleep(0.8)
+
+            advance_stepper(1)
+
+    except KeyboardInterrupt:
+        print("\n[Print Interrupted] Halting print sequence...")
+        cancelled = True
+    finally:
+        # Guarantee reset on exit or error
+        reset_heights()
+        set_lock(0.0)
+
+    if cancelled:
+        return 
     return (
         "Print sequence generated successfully. "
         "The hardware matrix is ready for transmission."
