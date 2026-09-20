@@ -1,0 +1,23 @@
+{
+  "_comment": "Calibration range from 2026-09-20 bench testing (see CLAUDE.md Servo calibration section and CHANGELOG.md). Confirmed max range via incremental testing on real hardware: 550us (0 deg) to 2500us (180 deg). A UNIFORM value applied to all channels via the ESP32's SERVOALL command, NOT real per-servo calibration yet - each SG90 channel still needs the individual calipers-measured procedure. The MG996R (friction plate) channel was swept the same way during this test but its real values should be light-hold/full-lock force positions, not a 0/180 degree height mapping - needs its own calibration, not this file's servos entries.",
+  "pca9685_freq_hz": 50,
+  "servos": {
+    "0": { "pulse_us_0deg": 550, "pulse_us_180deg": 2500, "direction": 1, "offset_deg": 0 },
+    "1": { "pulse_us_0deg": 550, "pulse_us_180deg": 2500, "direction": 1, "offset_deg": 0 },
+    "2": { "pulse_us_0deg": 550, "pulse_us_180deg": 2500, "direction": 1, "offset_deg": 0 },
+    "3": { "pulse_us_0deg": 550, "pulse_us_180deg": 2500, "direction": 1, "offset_deg": 0 },
+    "4": { "pulse_us_0deg": 550, "pulse_us_180deg": 2500, "direction": 1, "offset_deg": 0 },
+    "5": { "pulse_us_0deg": 550, "pulse_us_180deg": 2500, "direction": 1, "offset_deg": 0 },
+    "6": { "pulse_us_0deg": 550, "pulse_us_180deg": 2500, "direction": 1, "offset_deg": 0 },
+    "7": { "pulse_us_0deg": 550, "pulse_us_180deg": 2500, "direction": 1, "offset_deg": 0 },
+    "8": { "pulse_us_0deg": 550, "pulse_us_180deg": 2500, "direction": 1, "offset_deg": 0 },
+    "9": { "pulse_us_0deg": 550, "pulse_us_180deg": 2500, "direction": 1, "offset_deg": 0 },
+    "10": { "pulse_us_0deg": 550, "pulse_us_180deg": 2500, "direction": 1, "offset_deg": 0 }
+  },
+  "mg996r_friction_plate": {
+    "_comment": "Confirmed working range 2026-09-20 via oscillation test on channel 11 (not 12 - an earlier test on channel 12 produced no movement across multiple pulse widths, including the standard MG996R range, before this channel was tried). unlocked_pulse_us/locked_pulse_us are the two ends of set_lock_servo()'s 0-1 range in control/height_control.py. Not yet the same thing as CLAUDE.md's Print cycle 'light-hold' vs 'full-lock' force tuning - those still need their own values, likely somewhere between these two ends.",
+    "channel": 11,
+    "unlocked_pulse_us": 1500,
+    "locked_pulse_us": 900
+  }
+}

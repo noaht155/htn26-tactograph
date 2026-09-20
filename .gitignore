@@ -1,0 +1,7 @@
+.env
+*.key
+*.tgz
+wpa_supplicant.conf
+__pycache__/
+build/
+.pio/
