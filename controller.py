@@ -194,9 +194,9 @@ class TactographController:
         Waits for completion and returns the final stepper position.
         """
         if x not in (1, -1):
-            steps = 100 if x >= 0 else -100
+            steps = 1000 if x >= 0 else -1000
         else:
-            steps = 100 if x == 1 else -100
+            steps = 1000 if x == 1 else -1000
 
         cmd = f"MOVE {steps}"
         resp = self._send_raw_command(cmd)

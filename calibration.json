@@ -18,6 +18,6 @@
     "_comment": "Confirmed working range 2026-09-20 via oscillation test on channel 11 (not 12 - an earlier test on channel 12 produced no movement across multiple pulse widths, including the standard MG996R range, before this channel was tried). unlocked_pulse_us/locked_pulse_us are the two ends of set_lock_servo()'s 0-1 range in control/height_control.py. Not yet the same thing as CLAUDE.md's Print cycle 'light-hold' vs 'full-lock' force tuning - those still need their own values, likely somewhere between these two ends.",
     "channel": 11,
     "unlocked_pulse_us": 1500,
-    "locked_pulse_us": 900
+    "locked_pulse_us": 800
   }
 }

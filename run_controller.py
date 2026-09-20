@@ -32,21 +32,21 @@ def main():
     time.sleep(0.5)
 
     # 2. Example: Set heights across all 11 pins (channels 0..10, values from 0.0 to 1.0)
-    print("Setting pin heights...")
-    sample_heights = [0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0]
-    set_heights(sample_heights)
-    time.sleep(1.0)
+    # print("Setting pin heights...")
+    # sample_heights = [1.0] * 11
+    # set_heights(sample_heights)
+    # time.sleep(10.0)
 
-    # 3. Lock friction plate (channel 11: 0.0 = unlocked, 1.0 = locked)
-    print("Setting lock to 1.0 (locked)...")
-    set_lock(1.0)
-    time.sleep(0.5)
+    # # 3. Lock friction plate (channel 11: 0.0 = unlocked, 1.0 = locked)
+    # print("Setting lock to 1.0 (locked)...")
+    # set_lock(1.0)
+    # time.sleep(3)
 
-    print("Setting lock to 0.0 (unlocked)...")
-    set_lock(0.0)
-    time.sleep(0.5)
+    # print("Setting lock to 0.0 (unlocked)...")
+    # set_lock(0.0)
+    # time.sleep(3)
 
-    # 4. Stepper motion: advance forward (+100 steps) then back (-100 steps)
+    # # 4. Stepper motion: advance forward (+100 steps) then back (-100 steps)
     print("Advancing stepper forward by 100 steps (x=1)...")
     advance_stepper(1)
     time.sleep(0.5)
